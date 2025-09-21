@@ -1,7 +1,12 @@
 'use client'
 
-import { EagleEyeApp } from '@/components/EagleEyeApp'
+import { AuthWrapper } from '@/components/AuthWrapper'
+import { EagleEyeAppWithSupabase } from '@/components/EagleEyeAppWithSupabase'
 
 export default function Home() {
-  return <EagleEyeApp />
+  return (
+    <AuthWrapper>
+      <EagleEyeAppWithSupabase />
+    </AuthWrapper>
+  )
 }
