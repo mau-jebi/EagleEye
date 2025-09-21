@@ -21,7 +21,13 @@ export async function migrateLocalStorageToSupabase(): Promise<MigrationResult> 
   }
 
   try {
-    // Check if user is authenticated
+    // Check if Supabase is configured and user is authenticated
+    if (!supabase) {
+      result.errors.push('Supabase not configured')
+      result.message = 'Cloud storage not available'
+      return result
+    }
+
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     if (authError || !user) {
       result.errors.push('User not authenticated')
@@ -162,7 +168,11 @@ export async function migrateLocalStorageToSupabase(): Promise<MigrationResult> 
 
 export async function clearCloudData(): Promise<{ success: boolean; message: string }> {
   try {
-    // Check if user is authenticated
+    // Check if Supabase is configured and user is authenticated
+    if (!supabase) {
+      return { success: false, message: 'Supabase not configured' }
+    }
+
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     if (authError || !user) {
       return { success: false, message: 'User not authenticated' }
